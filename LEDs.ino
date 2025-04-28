@@ -3,11 +3,11 @@
       LED Program:
       Controls ~195 WS2812B LEDs (4ft strip) for the Nerual Kinetic Sculpture
 
-      Modfied: March 18, 2025
+      Created: March 18, 2025
       By: Letzy Mota and Ashley Nguyen
 
-      Modified: April 15, 2025
-      By: Letzy Mota
+      Modified: April 28, 2025
+      By: Ashley Nguyen
 
 */
 
@@ -24,14 +24,14 @@ Adafruit_NeoPixel strip(NumLEDs, LEDPin, NEO_GRB + NEO_KHZ800); // defines strip
 void SetAllLEDs();
 
 int32_t currColor;
-int currBrightness;
+int currentBrightness;
 
 void setup() {
 
     strip.begin(); // initializes LEDS
     strip.show();  // sets all LEDs to off
     strip.setBrightness(Brightness); // adjusts brightness
-    strip.SetAllLEDs(strip.Color(0x00, 0x00, 0xFF));
+    SetAllLEDs(strip.Color(0x00, 0x00, 0xFF));
     currColor = 0x0000FF;
     currentBrightness = Brightness;
 
@@ -39,8 +39,8 @@ void setup() {
 
 void loop() {
     delay(10);
-    TransitionLEDs(0xFF0032, 30);
-    TransitionLEDs(0x551214, 80);
+    TransitionLEDs(0x5D00FF, 30);
+    TransitionLEDs(0x5DAD2F, 80);
     //TransitionLEDs(0xFF5733, 0xFFB6C1);
     // delay(10);
     //TransitionLEDs(0xFFB6C1, 0xFF5733);
