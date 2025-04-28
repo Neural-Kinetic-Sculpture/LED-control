@@ -23,20 +23,29 @@ Adafruit_NeoPixel strip(NumLEDs, LEDPin, NEO_GRB + NEO_KHZ800); // defines strip
 
 void SetAllLEDs();
 
+int32_t currColor;
+int currBrightness;
+
 void setup() {
 
     strip.begin(); // initializes LEDS
     strip.show();  // sets all LEDs to off
     strip.setBrightness(Brightness); // adjusts brightness
+    strip.SetAllLEDs(strip.Color(0x00, 0x00, 0xFF));
+    currColor = 0x0000FF;
+    currentBrightness = Brightness;
 
 }
 
 void loop() {
-    
-    TransitionLEDs(0xFF5733, 0xFFB6C1);
-   // delay(10);
-    TransitionLEDs(0xFFB6C1, 0xFF5733);
-   // delay(10);
+    delay(10);
+    TransitionLEDs(0xFF0032, 30);
+    TransitionLEDs(0x551214, 80);
+    //TransitionLEDs(0xFF5733, 0xFFB6C1);
+    // delay(10);
+    //TransitionLEDs(0xFFB6C1, 0xFF5733);
+    // delay(10);
+    //
 
 }
 
@@ -48,8 +57,37 @@ void SetAllLEDs(uint32_t color) {
     strip.show(); // apply changes
 }
 
+void TransitionLEDs(uint32_t color2, int NewBrightness) {
+  int red1 = (currColor >> 16) & 0xff;
+  int green1 = (currColor >> 8) & 0xff;
+  int blue1 = (currColor) & 0xff;
+
+  int red2 = (color2 >> 16) & 0xff;
+  int green2 = (color2 >> 8) & 0xff;
+  int blue2 = (color2) & 0xff;
+
+  for (int i = 0; i <= 200; i++) {
+    float t = i / 200.0;  // Interpolation amount from 0.0 to 1.0
+
+    int newred = round(red1 + (red2 - red1) * t);
+    int newgreen = round(green1 + (green2 - green1) * t);
+    int newblue = round(blue1 + (blue2 - blue1) * t);
+
+    int NextBrightness = round(currentBrightness + (NewBrightness-currentBrightness) * t);
+
+    SetAllLEDs(strip.Color(newred, newgreen, newblue));
+   // delay(10);
+  }
+
+  SetAllLEDs(color2);
+  currentBrightness = NewBrightness;
+  currColor = color2;
+  delay(500);
+
+}
+
 // gradient function
-void TransitionLEDs(uint32_t color1, uint32_t color2) {
+/*void TransitionLEDs(uint32_t color1, uint32_t color2) {
   int red1 = (color1 >> 16) & 0xff;
   int green1 = (color1 >> 8) & 0xff;
   int blue1 = (color1) & 0xff;
@@ -72,4 +110,4 @@ void TransitionLEDs(uint32_t color1, uint32_t color2) {
   SetAllLEDs(color2);
   delay(500);
 
-}
+} old function*/
